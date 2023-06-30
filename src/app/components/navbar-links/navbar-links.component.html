@@ -1,0 +1,29 @@
+<div class="container-fluid">
+    <h2 class="text-center mt-2">ADMIN</h2>
+    <hr>
+
+    <mat-list role="list">
+        <mat-list-item role="listitem" class="links" *ngFor="let link of links">
+            <a routerLink="{{link.routerLink}}" routerLinkActive="link-active">
+                <mat-icon class="me-3">{{link.listIcon}}</mat-icon>
+                {{link.name}}
+            </a>
+        </mat-list-item>
+
+        <p class="mt-4">Blogs</p>
+        <mat-list-item role="listitem" class="links" *ngFor="let link of blogLinks">
+            <a routerLink="{{link.routerLink}}" routerLinkActive="link-active">
+                <mat-icon class="me-3">{{link.listIcon}}</mat-icon>
+                {{link.name}}
+            </a>
+        </mat-list-item>
+
+        <p class="mt-4">Users</p>
+        <mat-list-item role="listitem" class="links" *ngFor="let link of userLinks">
+            <a routerLink="{{link.routerLink}}" routerLinkActive="link-active">
+                <mat-icon class="me-3">{{link.listIcon}}</mat-icon>
+                {{link.name}}
+            </a>
+        </mat-list-item>
+    </mat-list>
+</div>
