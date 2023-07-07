@@ -28,6 +28,8 @@ import { MatInputModule } from '@angular/material/input';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { MatSortModule } from '@angular/material/sort';
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,8 @@ import { HttpClientModule } from '@angular/common/http';
     DashboardComponent,
     BlogListComponent,
     BlogAddComponent,
-    NavbarLinksComponent
+    NavbarLinksComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +63,8 @@ import { HttpClientModule } from '@angular/common/http';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSortModule
   ],
   providers: [],
   bootstrap: [AppComponent]

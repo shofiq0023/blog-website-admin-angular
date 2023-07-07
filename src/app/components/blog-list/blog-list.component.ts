@@ -1,7 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { BlogModel } from 'src/app/models/data-models/blog.model';
+import { BlogsApiService } from 'src/app/services/blogs-api.service';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-blog-list',
@@ -9,49 +13,75 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./blog-list.component.scss']
 })
 export class BlogListComponent implements OnInit {
-  
-  ngOnInit(): void {
-    // this.listData = new MatTableDataSource(res.data);
-      this.listData.sort = this.sort;
-      this.listData.paginator = this.paginator;
-      this.listData.filterPredicate = (data, filter) => {
-        return this.displayedColumns.some(ele => {
-          return ele != 'actions' && ele != 'parentUnitName' && data[ele] ? data[ele].toString().toLowerCase().indexOf(filter) != -1 : null;
-        });
-      };
+  constructor(private blogsApiService: BlogsApiService, public dialog: MatDialog) { }
+
+  public ngOnInit(): void {
+    this.getBlogs();
   }
-  // public blogList: any[] = [
-  //   { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  //   { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  //   { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  //   { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-  //   { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-  //   { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-  //   { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-  //   { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-  //   { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  //   { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-  // ];
 
+  public displayedColumns: string[] = ['num', 'thumbnail', 'title', 'views', 'like', 'love', 'createdAt', 'actions'];
+  public listData!: MatTableDataSource<BlogModel>;
 
+  private defaultImage = "/assets/default-image.png";
 
-  // displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-
-  listData!: MatTableDataSource<any>;
-
-  displayedColumns: string[] = ['unitCode', 'unitName', 'unitLevelName', 'unitLevelCode', 'parentUnitName', 'phone', 'address', 'actions'];
   @ViewChild(MatSort)
-  sort!: MatSort;
+  private sort!: MatSort;
+
   @ViewChild(MatPaginator)
-  paginator!: MatPaginator;
-  searchKey!: string;
+  private paginator!: MatPaginator;
+
+  public searchKey!: string;
+  public loading: boolean = true;
 
 
-  onSearchClear() {
+  // METHODS =================================
+  public getBlogs(): void {
+    this.blogsApiService.getBlogs().subscribe({
+      next: (res) => {
+        this.listData = new MatTableDataSource(res.data);
+        this.listData.sort = this.sort;
+        this.listData.paginator = this.paginator;
+        this.loading = false;
+      },
+      error: (err) => console.log(err)
+    });
+  }
+
+  public onSearchClear(): void {
     this.searchKey = "";
     this.applyFilter();
   }
-  applyFilter() {
+
+  public applyFilter(): void {
     this.listData.filter = this.searchKey?.trim().toLowerCase();
+  }
+
+  // Sets the default image of a Blog
+  public setDefaultImage(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = this.defaultImage;
+  }
+
+  public openDialog(id: string): void {
+    // Opens the dialog box for confirmation
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        message: 'Are you sure want to delete?',
+        buttonText: {
+          ok: 'Yes',
+          cancel: 'No'
+        }
+      }
+    });
+
+    // Delete api call after confirm button is pressed
+    dialogRef.afterClosed().subscribe({
+      next: (confirmed: boolean) => {
+        if (confirmed) {
+          this.loading = true;
+          this.blogsApiService.deleteBlog(id).subscribe(() => this.getBlogs());
+        }
+      }
+    });
   }
 }
