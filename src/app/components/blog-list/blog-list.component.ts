@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { BlogModel } from 'src/app/models/data-models/blog.model';
 import { BlogsApiService } from 'src/app/services/blogs-api.service';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-blog-list',
@@ -13,7 +14,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
   styleUrls: ['./blog-list.component.scss']
 })
 export class BlogListComponent implements OnInit {
-  constructor(private blogsApiService: BlogsApiService, public dialog: MatDialog) { }
+  constructor(private blogsApiService: BlogsApiService, public dialog: MatDialog, private snackBar: MatSnackBar) { }
 
   public ngOnInit(): void {
     this.getBlogs();
@@ -79,9 +80,17 @@ export class BlogListComponent implements OnInit {
       next: (confirmed: boolean) => {
         if (confirmed) {
           this.loading = true;
-          this.blogsApiService.deleteBlog(id).subscribe(() => this.getBlogs());
+          this.blogsApiService.deleteBlog(id).subscribe(() => {
+            this.getBlogs();
+            this.snackBar.open("Blog was deleted", "", {
+              duration: 3000,
+              panelClass: 'snack-success'
+            });
+          });
         }
       }
     });
   }
+
+
 }

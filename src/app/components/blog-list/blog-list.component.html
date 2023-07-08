@@ -1,5 +1,10 @@
 <div class="blog-list">
     <h2 class="mb-3">List of all Blogs</h2>
+    
+    <a routerLink="/create-blog" class="mb-4" mat-flat-button color="primary">
+        <mat-icon>add</mat-icon>
+        Create a new blog
+    </a>
 
     <div class="mat-elevation-z2 custom-table">
         <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
@@ -76,9 +81,6 @@
     </div>
 
 </div>
-
-
-
 
 
 

@@ -13,3 +13,14 @@ body {
     margin: 0;
 
 }
+
+
+.snack-success {
+    --mdc-snackbar-container-color: #198754;
+    --mdc-snackbar-supporting-text-color: white;
+}
+
+.snack-fail {
+    --mdc-snackbar-container-color: #DC3545;
+    --mdc-snackbar-supporting-text-color: white;
+}
