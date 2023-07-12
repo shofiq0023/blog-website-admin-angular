@@ -37,4 +37,16 @@ export class BlogsApiService {
     let url = api.BLOG_DELETE + id;
     return this.http.delete<number>(url);
   }
+
+  // call the API to update a blog
+  public updateBlog(updatedBlog: BlogModel): Observable<boolean> {
+    let success = false;
+
+    this.http.put(api.BLOG_UPDATE + updatedBlog._id, updatedBlog).subscribe({
+      next: (res) => success = true,
+      error: (err) => console.log(err)
+    })
+
+    return of(success);
+  }
 }

@@ -7,6 +7,7 @@ import { BlogModel } from 'src/app/models/data-models/blog.model';
 import { BlogsApiService } from 'src/app/services/blogs-api.service';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { BlogEditComponent } from '../blog-edit/blog-edit.component';
 
 @Component({
   selector: 'app-blog-list',
@@ -92,5 +93,7 @@ export class BlogListComponent implements OnInit {
     });
   }
 
-
+  public openEditDialog(blogRow: BlogModel): void {
+    const dialogRef = this.dialog.open(BlogEditComponent, { data: blogRow });
+  }
 }

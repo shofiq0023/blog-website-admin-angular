@@ -31,6 +31,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatSortModule } from '@angular/material/sort';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
+import { BlogEditComponent } from './components/blog-edit/blog-edit.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { MatSelectModule } from '@angular/material/select';
     BlogListComponent,
     BlogAddComponent,
     NavbarLinksComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    BlogEditComponent
   ],
   imports: [
     BrowserModule,
